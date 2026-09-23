@@ -24,7 +24,7 @@ A structured, hands-on learning repository for building GenAI applications with 
 
 ## Prerequisites
 
-- Python 3.11+
+- Python 3.11+ — [python.org/downloads](https://www.python.org/downloads/)
 - [Ollama](https://ollama.com) installed locally (for local model notebooks)
 - OpenAI API key (for OpenAI notebooks)
 - HuggingFace token (for HuggingFace notebooks)
@@ -35,17 +35,42 @@ A structured, hands-on learning repository for building GenAI applications with 
 
 ### 1. Clone / open the project
 
+**macOS / Linux**
 ```bash
 cd "Rahul Jauhari/Personal Projects/GenAI - Learning/Langchain"
 ```
 
+**Windows (Command Prompt or PowerShell)**
+```powershell
+cd "Rahul Jauhari\Personal Projects\GenAI - Learning\Langchain"
+```
+
 ### 2. Create and activate the virtual environment
 
+**macOS / Linux**
 ```bash
 python3 -m venv .venv
-source .venv/bin/activate        # macOS / Linux
-# .venv\Scripts\activate         # Windows
+source .venv/bin/activate
 ```
+
+**Windows (Command Prompt)**
+```cmd
+python -m venv .venv
+.venv\Scripts\activate.bat
+```
+
+**Windows (PowerShell)**
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+> If PowerShell blocks the script with an execution policy error, run this first:
+> ```powershell
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
+
+Once activated, your terminal prompt will show `(.venv)`.
 
 ### 3. Install dependencies
 
@@ -53,22 +78,115 @@ source .venv/bin/activate        # macOS / Linux
 pip install -r requirements.txt
 ```
 
+This works the same on all platforms once the venv is activated.
+
 ### 4. Set up environment variables
 
-Create a `.env` file in the project root (one already exists — fill in your keys):
+**macOS / Linux**
+```bash
+cp .env.example .env
+```
+
+**Windows (Command Prompt)**
+```cmd
+copy .env.example .env
+```
+
+**Windows (PowerShell)**
+```powershell
+Copy-Item .env.example .env
+```
+
+Then open `.env` in any text editor and fill in your keys:
 
 ```
 OPENAI_API_KEY="sk-..."
 HUGGINGFACEHUB_ACCESS_TOKEN="hf_..."
 ```
 
-### 5. Pull Ollama models (for local model notebooks)
+### 5. Set up Ollama (local LLM runtime)
+
+Several notebooks and both Streamlit apps run models **locally** through Ollama — no API key needed, everything stays on your machine.
+
+#### Install Ollama
+
+**macOS**
+```bash
+brew install ollama
+# or download the desktop app from https://ollama.com/download
+```
+
+**Linux**
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+**Windows**
+
+1. Go to [https://ollama.com/download](https://ollama.com/download)
+2. Download the Windows installer (`OllamaSetup.exe`)
+3. Run the installer — Ollama installs as a background service and adds `ollama` to your PATH
+4. Open a new Command Prompt or PowerShell window and verify:
+   ```powershell
+   ollama --version
+   ```
+
+#### Start the Ollama daemon
+
+Ollama must be running in the background before any notebook or app can talk to it.
+
+**macOS / Linux**
+```bash
+ollama serve
+```
+
+**Windows** — Ollama runs automatically as a system tray app after installation. If it's not running, search for "Ollama" in the Start menu and launch it. You can also start it from the terminal:
+```powershell
+ollama serve
+```
+
+Verify it's up (all platforms):
+```bash
+curl http://localhost:11434
+# should return: Ollama is running
+```
+
+On **Windows** without `curl`, use PowerShell:
+```powershell
+Invoke-WebRequest -Uri http://localhost:11434 -UseBasicParsing
+```
+
+> Ollama listens on `http://localhost:11434` by default.
+
+#### Pull the models used in this repo
+
+Run these in any terminal (all platforms):
 
 ```bash
-# Install Ollama first: https://ollama.com/download
-ollama pull llama3.1        # used in Tool Calling notebook
-ollama pull gemma4:26b      # used in Agents notebook
-ollama pull nomic-embed-text  # used in embedding notebooks
+ollama pull llama3.1          # Tool Calling notebook (17)
+ollama pull gemma4:26b        # Agents notebook (18)
+ollama pull nomic-embed-text  # Embedding notebooks (3), chatbot.py, doc_writer.py
+```
+
+Model weights are stored at:
+- macOS / Linux: `~/.ollama/models`
+- Windows: `C:\Users\<YourName>\.ollama\models`
+
+Large models (gemma4:26b is ~17 GB) take a while on first pull — make sure you have disk space.
+
+#### List and manage models
+
+```bash
+ollama list              # see downloaded models
+ollama rm <model-name>   # delete a model to free disk space
+ollama show llama3.1     # inspect a model's info
+```
+
+#### Test a model from the terminal
+
+```bash
+ollama run llama3.1
+# type a prompt and press Enter; Ctrl+D or /bye to exit
 ```
 
 ---
