@@ -1,0 +1,17 @@
+{
+    "name": null,
+    "input_variables": [
+        "length",
+        "paper",
+        "style"
+    ],
+    "optional_variables": [],
+    "output_parser": null,
+    "partial_variables": {},
+    "metadata": null,
+    "tags": null,
+    "template": "Summarize the research paper on '{paper}' in a '{style}' style within {length} words.",
+    "template_format": "f-string",
+    "validate_template": true,
+    "_type": "prompt"
+}
