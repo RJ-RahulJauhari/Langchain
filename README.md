@@ -6,19 +6,34 @@ A structured, hands-on learning repository for building GenAI applications with 
 
 ## What's Inside
 
-| Folder / File | What It Covers |
-|---|---|
-| `1.LLMs/` | Basic LLM calls with OpenAI (`gpt-3.5-turbo-instruct`) |
-| `2.ChatModels/` | Chat models via OpenAI, Ollama (local), and HuggingFace |
-| `3.EmbeddingModels/` | Text embeddings with OpenAI, open-source models, Ollama, and document similarity |
-| `4.Prompt/` | Prompt templates, message placeholders, temperature tuning, and a chatbot UI |
-| `5.StructuredOutput/` | Extracting structured data using Pydantic, TypedDict, and `with_structured_output` |
-| `6.Chains/` | Sequential, parallel, and conditional chains with LangChain LCEL |
-| `8. Runnables/` | LangChain Runnables — the building blocks of LCEL pipelines |
-| `17. Tool Calling/` | Defining and binding custom tools to models |
-| `18. Agents/` | Building agents with tool use (DuckDuckGo search + Ollama) |
-| `chatbot.py` | Streamlit chatbot app with RAG (Chroma vector store + Ollama) |
-| `doc_writer.py` | Streamlit app to study a codebase and generate documentation via LLM |
+### Learning Notebooks (topic-by-topic)
+
+| Folder | What It Covers |
+|--------|---------------|
+| `1.LLMs/` | What LLMs are; calling OpenAI's completion API via LangChain |
+| `2.ChatModels/` | Chat models with turn-based messages via OpenAI, Ollama (local), and HuggingFace |
+| `3.EmbeddingModels/` | Text embeddings, semantic search, and document similarity |
+| `4.Prompt/` | Prompt templates, message placeholders, temperature tuning, conversation memory |
+| `5.StructuredOutput/` | Getting structured JSON back from LLMs using Pydantic and TypedDict |
+| `6.Chains/` | Sequential, parallel, and conditional chains using LCEL (the `|` pipe operator) |
+| `8. Runnables/` | Understanding LangChain's Runnable abstraction by building one from scratch |
+| `17. Tool Calling/` | Giving models custom tools to call (functions, APIs) |
+| `18. Agents/` | Autonomous agents that decide which tools to use and when |
+
+Each folder has its own `README.md` explaining the topic from scratch.
+
+### Apps (full Streamlit web applications)
+
+| Folder | App | What it does |
+|--------|-----|-------------|
+| `apps/chatbot/` | RAG Chatbot | Upload PDFs/DOCX, ask questions about your documents |
+| `apps/doc_writer/` | Codebase Doc Writer | Upload a zip of any codebase, get AI-generated documentation |
+
+### Other
+
+| Folder / File | What it is |
+|---------------|-----------|
+| `extras/` | `test.ipynb` — quick environment check (prints LangChain version) |
 
 ---
 
@@ -102,6 +117,7 @@ Then open `.env` in any text editor and fill in your keys:
 ```
 OPENAI_API_KEY="sk-..."
 HUGGINGFACEHUB_ACCESS_TOKEN="hf_..."
+TAVILY_API_KEY="tvly-..."     # only needed for 6.Chains/ParallelChain-1.ipynb
 ```
 
 ### 5. Set up Ollama (local LLM runtime)
@@ -219,14 +235,14 @@ Navigate to the numbered folder and open the `.ipynb` file.
 
 ## Running the Streamlit Apps
 
-Both apps require Ollama running locally.
+Both apps require Ollama running locally. They live in the `apps/` folder.
 
 ### Chatbot (RAG-enabled)
 
 A conversational chatbot that can ingest PDFs/DOCX files and answer questions about them using Chroma vector search.
 
 ```bash
-streamlit run chatbot.py
+streamlit run apps/chatbot/chatbot.py
 ```
 
 ### Codebase Doc Writer
@@ -234,7 +250,7 @@ streamlit run chatbot.py
 Upload a zip of a codebase and let the LLM study and document it for you.
 
 ```bash
-streamlit run doc_writer.py
+streamlit run apps/doc_writer/doc_writer.py
 ```
 
 ---
